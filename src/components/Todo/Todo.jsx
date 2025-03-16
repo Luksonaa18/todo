@@ -84,7 +84,7 @@ const Todo = () => {
           <div className="todo-item" key={index}>
             <div className="amd">
             <span className="din">{todo}</span>
-            <span>Today at 8:00 PM</span>
+            <span>{formatTime()}</span>
             </div>
             <div className="checks">
               <input type="checkbox" name="" id="asd" />
