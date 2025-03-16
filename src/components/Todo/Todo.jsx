@@ -1,50 +1,53 @@
-import React, { useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import "./todo.css";
 import Logo from "../../assets/logo.png";
 import { GoTrash } from "react-icons/go";
 
 const Todo = () => {
   const [date, setDate] = useState(new Date());
-  
+
   useEffect(() => {
     const timer = setInterval(() => {
       setDate(new Date());
     }, 1000);
-    
+
     return () => {
       clearInterval(timer);
     };
   }, []);
-  
 
   const formatTime = () => {
     let hours = date.getHours();
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    const ampm = hours >= 12 ? 'AM' : 'AM';
-    
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    const ampm = hours >= 12 ? "PM" : "AM";
+
     hours = hours % 12;
     hours = hours ? hours : 12;
-    
+
     return `${hours}:${minutes} ${ampm}`;
   };
-  
 
   const getDayOfWeek = () => {
-    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
+    const days = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
     return days[date.getDay()];
   };
-  
 
   const getDate = () => {
     return date.getDate();
   };
-  const [todos, setTodos] = useState([
-    "Dinner",
-    "Walk with Coby",
-    "Buy Groceries",
-    "Go to repair shop",
-  ]);
+
+  const [todos, setTodos] = useState(() => {
+    const savedTodos = localStorage.getItem("todos");
+    return savedTodos
+      ? JSON.parse(savedTodos)
+      : ["Dinner", "Walk with Coby", "Buy Groceries", "Go to repair shop"];
+  });
+
   const [input, setInput] = useState("");
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
   const addTodo = () => {
     if (input) {
@@ -83,8 +86,8 @@ const Todo = () => {
         {todos.map((todo, index) => (
           <div className="todo-item" key={index}>
             <div className="amd">
-            <span className="din">{todo}</span>
-            <span>{formatTime()}</span>
+              <span className="din">{todo}</span>
+              <span>{formatTime()}</span>
             </div>
             <div className="checks">
               <input type="checkbox" name="" id="asd" />
